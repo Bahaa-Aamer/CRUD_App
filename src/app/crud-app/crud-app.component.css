@@ -1,0 +1,90 @@
+.sorting-btn {
+  margin: auto 0 auto 10px !important;
+  padding: 2px 5px;
+  float: left;
+  width: 35px;
+}
+
+table {
+  text-align: center;
+}
+
+tr {
+  margin: 0.2vw;
+}
+
+th:nth-child(1) {
+  width: 10%;
+}
+
+th {
+  width: 20%;
+  font-size: 1.2rem;
+}
+
+td {
+  padding: 0.5vw 0;
+  align-content: center;
+  font-size: 1.2rem;
+  height: 71px;
+  transition: 0.3s ease-in-out;
+}
+
+td button {
+  margin: 0 0.3vw;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+
+.fade {
+  opacity: 0;
+  animation: slide-in-right 0.5s forwards;
+}
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* -------------------- */
+.input {
+  border: 2px solid transparent;
+  width: 15em;
+  height: 2.5em;
+  padding-left: 0.8em;
+  outline: none;
+  overflow: hidden;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  transition: all 0.5s;
+  position: relative;
+  margin: 8px 0 14px 0;
+  margin-left: 1vw;
+}
+
+.input:hover,
+.input:focus {
+  border: 2px solid #4a9dec;
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+  background-color: white;
+}
+
+.form-group {
+  margin: 0.5vw 0;
+}
+
+@media (max-width: 767px) {
+  .sorting-btn {
+    margin: 2.8vw 0 !important;
+  }
+
+  td button {
+    margin: 0.2vw 0;
+  }
+}

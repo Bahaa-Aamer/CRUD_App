@@ -1,0 +1,255 @@
+<!-- nav -->
+<div
+  class="d-flex"
+  style="justify-content: end; background-color: darkgray; padding: 1vw 1.5vw"
+>
+  <button
+    class="btn btn-success"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    Add Client
+  </button>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  style="transition: 0.3s ease-in"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Client</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form" (submit)="add(form.value)">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Name:</label>
+            <input
+              required
+              formControlName="name"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter yout name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputPassword1">Title:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Enter your title"
+              required
+              formControlName="title"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Choose your image:</label>
+            <input
+              style="
+                opacity: 1;
+                margin-top: 0.5vw;
+                width: 50% !important;
+                display: block;
+              "
+              accept="image/*"
+              formControlName="img"
+              (change)="handleFileInput($event)"
+              type="file"
+              class="form-control-file"
+              id="exampleFormControlFile1"
+            />
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-success">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DATA LIST -->
+
+<div class="container-fluid">
+  <div class="row">
+    <button
+      class="btn btn-secondary sorting-btn"
+      type="button"
+      (click)="sortData()"
+    >
+      <img
+        class="sorting-icon"
+        style="filter: invert(1); width: 1.4rem"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAqUlEQVR4nO2TUQqFIBBF7yaetP+lOB/xHr2fClqOIYwgYmA6E4gdiCJHD9NtgJcRIQCu8PK1Ob4AZk2xvTgjrD+O60pMDdmqi62GWIK+xNSQrZrYaool6EtMjfmKi622WIK+xFSRrY9hAWAyYsNr811xSbY/rt1YFPYafue4RpxYEO7x8xZ9DXE+ANbMNBwAppIDqGJuA76rPem4uFOqmNtU/k9+tpcBOQEWyZL8yn5IGwAAAABJRU5ErkJggg=="
+      />
+    </button>
+    <input
+      style="margin: 10px 0 10px 5px"
+      class="input"
+      placeholder="search"
+      [(ngModel)]="searchValue"
+    />
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Title</th>
+        <th scope="col">Img</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let item of data; let i = index">
+      <tr
+        *ngIf="
+          searchValue === '' || item.name.toLowerCase().includes(searchValue)
+        "
+      >
+        <td>{{ i + 1 }}</td>
+
+        <td>{{ item.name }}</td>
+
+        <td>{{ item.title }}</td>
+
+        <td>
+          <img
+            style="object-fit: cover"
+            *ngIf="item.img"
+            [src]="item.img"
+            alt="ProfilePic"
+            height="60"
+            width="60"
+          />
+        </td>
+
+        <td>
+          <button (click)="ondelete(i)" class="btn btn-danger">Delete</button>
+
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalCenter"
+            (click)="onEdit(i)"
+          >
+            Update
+          </button>
+
+          <!-- update Modal -->
+
+          <div
+            style="transition: 0.3s ease-in-out"
+            class="modal fade"
+            id="exampleModalCenter"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <form
+                  #updateForm
+                  (submit)="
+                    onSave(i, updateName.value, updateTitle.value, updateForm)
+                  "
+                >
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                      Update
+                    </h5>
+                  </div>
+                  <div class="modal-body" style="text-align: start">
+                    <div class="form-group">
+                      <label for="updateName">Name:</label>
+                      <input
+                        pattern="[a-zA-Z ]*"
+                        autocomplete="off"
+                        type="text"
+                        class="form-control"
+                        id="updateName"
+                        aria-describedby="emailHelp"
+                        #updateName
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="updateTitle">Title:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="updateTitle"
+                        pattern="[a-zA-Z ]*"
+                        #updateTitle
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Choose your image:</label>
+                      <input
+                        style="
+                          opacity: 1;
+                          margin-top: 0.5vw;
+                          width: 50% !important;
+                          display: block;
+                        "
+                        accept="image/*"
+                        (change)="updateImg($event)"
+                        type="file"
+                        class="form-control-file"
+                        id="exampleFormControlFile1"
+                      />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      data-bs-dismiss="modal"
+                      [disabled]="invalidUpdate"
+                    >
+                      Save changes
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
